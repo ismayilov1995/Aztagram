@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "615613417414",
+    "firebase_url": "https://aztagram-ada25.firebaseio.com",
+    "project_id": "aztagram-ada25",
+    "storage_bucket": "aztagram-ada25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615613417414:android:cbc2ceb4813d0fc6",
+        "android_client_info": {
+          "package_name": "com.ismayilov.ismayil.aztagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615613417414-v64u5hisf1kd75h97olf9g8fg8u93uu2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ismayilov.ismayil.aztagram",
+            "certificate_hash": "cab608fbff2ddd0739a32339fbb044c2c3acaa03"
+          }
+        },
+        {
+          "client_id": "615613417414-kbb1v2qiv2lovohe0dv6loa8a5en5ope.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe5xGASm1UCND1k-yJQ_LX6T5srtHMzJk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615613417414-kbb1v2qiv2lovohe0dv6loa8a5en5ope.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
