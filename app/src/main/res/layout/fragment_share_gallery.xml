@@ -101,14 +101,11 @@
 
         </FrameLayout>
 
-        <GridView
-            android:id="@+id/gridImages"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recViewFiles"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
-            android:numColumns="4"
-            android:verticalSpacing="1dp"
-            android:horizontalSpacing="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.3"

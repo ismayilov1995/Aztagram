@@ -28,7 +28,6 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        setupNavigationView()
         setupToolbar()
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
@@ -112,6 +111,11 @@ class ProfileActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
     }
 
     override fun onStart() {

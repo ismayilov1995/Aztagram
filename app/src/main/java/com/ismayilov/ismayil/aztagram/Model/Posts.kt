@@ -4,13 +4,13 @@ class Posts {
 
     var user_id:String? = null
     var post_id:String? = null
-    var upload_date:String? = null
+    var upload_date:Long? = null
     var description:String? = null
     var file_url:String? = null
 
     constructor(){}
 
-    constructor(user_id: String?, post_id: String?, upload_date: String?, description: String?, file_url: String?) {
+    constructor(user_id: String?, post_id: String?, upload_date: Long?, description: String?, file_url: String?) {
         this.user_id = user_id
         this.post_id = post_id
         this.upload_date = upload_date

@@ -65,7 +65,6 @@ class DocumentsProsess {
 
         override fun doInBackground(vararg p0: String?): String? {
             val folderOfNewCreatedFiles = File(Environment.getExternalStorageDirectory().absolutePath + "/DCIM/Aztagram/compressedVideo/")
-
             if (folderOfNewCreatedFiles.isDirectory || folderOfNewCreatedFiles.mkdirs()) {
                 var newFilesPath = SiliCompressor.with(fragment.context).compressVideo(p0[0], folderOfNewCreatedFiles.path)
                 return newFilesPath

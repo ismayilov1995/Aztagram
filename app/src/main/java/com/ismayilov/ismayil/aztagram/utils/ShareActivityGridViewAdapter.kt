@@ -60,33 +60,19 @@ class ShareActivityGridViewAdapter(mContext: Context?, resource: Int, var filesI
         return singleRawImg!!
     }
 
-    fun convertDuration(duration: Long): String {
-        var out: String? = null
-        var hours: Long = 0
-        try {
-            hours = duration / 3600000
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return out!!
+    fun convertDuration(duration:Long):String{
+
+        val second = duration / 1000 % 60
+        val minute = duration / (1000 * 60) % 60
+        val hour = duration / (1000 * 60 * 60) % 24
+
+        var time = ""
+        if (hour > 0){
+            time = String.format("%02d:%02d:%02d",hour,minute,second)
+        }else{
+            time = String.format("%02d:%02d",minute,second)
         }
-        val remaining_minutes = (duration - hours * 3600000) / 60000
-        var minutes = remaining_minutes.toString()
-        if (minutes == "0") {
-            minutes = "00"
-        }
-        val remaining_seconds = duration - hours * 3600000 - remaining_minutes * 60000
-        var seconds = remaining_seconds.toString()
-        if (seconds.length < 2) {
-            seconds = "00"
-        } else {
-            seconds = seconds.substring(0, 2)
-        }
-        if (hours > 0) {
-            out = hours.toString() + ":" + minutes + ":" + seconds
-        } else {
-            out = "$minutes:$seconds"
-        }
-        return out
+        return time
     }
 
 }

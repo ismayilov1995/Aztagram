@@ -8,4 +8,8 @@ class EventbusDataEvent {
     internal class BrodcastUserData(var user:Users?)
 
     internal class SharedImagePath(var filePath:String?,var fileTypeIsImage:Boolean?)
+
+    internal class SendChoosenFilePath(var filePath:String?)
+
+    internal class SendCameraRequestPermission(var canUseCamera:Boolean?)
 }

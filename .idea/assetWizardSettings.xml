@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/E:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_close_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/E:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_flash_on_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="50" />
+                                                <entry key="paddingPercent" value="30" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -45,7 +45,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\ismay\Desktop\ic_login.png" />
+                                      <entry key="imageAsset" value="E:\AndroidWorkspace\Stuff\aztagram\icon\ic_login.png" />
                                       <entry key="outputName" value="ic_login" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="0e1118" />

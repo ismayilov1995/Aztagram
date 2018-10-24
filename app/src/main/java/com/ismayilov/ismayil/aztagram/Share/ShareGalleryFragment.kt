@@ -1,10 +1,12 @@
 package com.ismayilov.ismayil.aztagram.Share
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +15,20 @@ import android.widget.ArrayAdapter
 import com.ismayilov.ismayil.aztagram.R
 import com.ismayilov.ismayil.aztagram.utils.DocumentsProsess
 import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent
-import com.ismayilov.ismayil.aztagram.utils.ShareActivityGridViewAdapter
+import com.ismayilov.ismayil.aztagram.utils.ShareGalleryRecyclerAdapter
 import com.ismayilov.ismayil.aztagram.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.view.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import java.io.File
 
 
 class ShareGalleryFragment : Fragment() {
 
-    var choosenImagePath:String? = null
-    var fileTypeIsImage:Boolean? = null
+    var choosenFilePath: String? = null
+    var fileTypeIsImage: Boolean? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,18 +36,34 @@ class ShareGalleryFragment : Fragment() {
 
         val foldersPaths = ArrayList<String>()
         val foldersNames = ArrayList<String>()
-        val root = Environment.getExternalStorageDirectory().path
-        val cameraImages = "$root/DCIM/Camera"
-        val downloadImages = "$root/Download"
-        val whatsappImages = "$root/WhatsApp/Media/WhatsApp Images"
 
-        foldersPaths.add(cameraImages)
-        foldersPaths.add(downloadImages)
-        foldersPaths.add(whatsappImages)
+        val cameraImages = getDirPath("/DCIM/Camera")
+        val downloadImages = getDirPath("/Downloads")
+        val whatsappImages = getDirPath("/WhatsApp/Media/WhatsApp Images")
+        val aztagramDir = getDirPath("/DCIM/Aztagram")
+        val pictures = getDirPath("/Pictures")
 
-        foldersNames.add("Kamera")
-        foldersNames.add("Yuklenenler")
-        foldersNames.add("WhatsApp")
+        if (cameraImages.isDirectory){
+            foldersPaths.add(cameraImages.absolutePath)
+            foldersNames.add("Kamera")
+        }
+        if (downloadImages.isDirectory){
+            foldersPaths.add(downloadImages.absolutePath)
+            foldersNames.add("Yuklenenler")
+        }
+        if (whatsappImages.isDirectory){
+            foldersPaths.add(whatsappImages.absolutePath)
+            foldersNames.add("WhatsApp")
+        }
+        if (aztagramDir.isDirectory){
+            foldersPaths.add(aztagramDir.absolutePath)
+            foldersNames.add("Aztagram")
+        }
+        if (pictures.isDirectory){
+            foldersPaths.add(pictures.absolutePath)
+            foldersNames.add(pictures.name)
+        }
+
 
         val spinnerArrayAdapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, foldersNames)
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -53,9 +73,8 @@ class ShareGalleryFragment : Fragment() {
         view.spnFolderName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                setupGridView(DocumentsProsess.getDocumentsFromFolder(foldersPaths[p2]))
+                setupRecyclerView(DocumentsProsess.getDocumentsFromFolder(foldersPaths[p2]))
             }
         }
 
@@ -63,8 +82,7 @@ class ShareGalleryFragment : Fragment() {
             activity!!.shareRootContainer.visibility = View.GONE
             activity!!.shareFragmentContainer.visibility = View.VISIBLE
             val transaction = activity!!.supportFragmentManager.beginTransaction()
-
-            EventBus.getDefault().postSticky(EventbusDataEvent.SharedImagePath(choosenImagePath,fileTypeIsImage))
+            EventBus.getDefault().postSticky(EventbusDataEvent.SharedImagePath(choosenFilePath, fileTypeIsImage))
             view.videoView.stopPlayback()
             transaction.replace(R.id.shareFragmentContainer, ShareNextFragment())
                     .addToBackStack("Fragment Next")
@@ -79,20 +97,32 @@ class ShareGalleryFragment : Fragment() {
         return view
     }
 
-    fun setupGridView(filesInChoosenFolder: ArrayList<String>) {
-        val gridAdapter = ShareActivityGridViewAdapter(activity, R.layout.single_raw_gridview, filesInChoosenFolder)
-        gridImages.adapter = gridAdapter
-        choosenImagePath = filesInChoosenFolder[0]
-        showPicOrVidew(filesInChoosenFolder[0])
+    fun getDirPath(dirPath: String): File {
+        return File(Environment.getExternalStorageDirectory().absolutePath + dirPath)
+    }
 
-        gridImages.setOnItemClickListener { adapterView, gView, i, l ->
-            choosenImagePath = filesInChoosenFolder[i]
-            showPicOrVidew(filesInChoosenFolder[i])
-        }
+    @Subscribe
+    internal fun onChoosenImgPath(choosenImage: EventbusDataEvent.SendChoosenFilePath) {
+        choosenFilePath = choosenImage.filePath!!
+        showPicOrVidew(choosenFilePath!!)
+    }
+
+    private fun setupRecyclerView(documentsFromFolder: ArrayList<String>) {
+        val recViewAdaptor = ShareGalleryRecyclerAdapter(documentsFromFolder, this.activity!!)
+        recViewFiles.adapter = recViewAdaptor
+        val layoutManager = GridLayoutManager(this.activity!!, 4)
+        recViewFiles.layoutManager = layoutManager
+        recViewFiles.setHasFixedSize(true)
+        recViewFiles.setItemViewCacheSize(30)
+        recViewFiles.isDrawingCacheEnabled = true
+        recViewFiles.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_LOW
+        //fragment ilk acilan kimi qoyulan shekiller
+        choosenFilePath = documentsFromFolder[0]
+        showPicOrVidew(choosenFilePath!!)
     }
 
     private fun showPicOrVidew(filePath: String) {
-        if (filePath.contains(".")){
+        if (filePath.contains(".")) {
             val fileType = filePath.substring(filePath.lastIndexOf("."))
             if (fileType != null) {
                 if (fileType == ".mp4") {
@@ -111,4 +141,13 @@ class ShareGalleryFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context?) {
+        EventBus.getDefault().register(this)
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        EventBus.getDefault().unregister(this)
+        super.onDetach()
+    }
 }

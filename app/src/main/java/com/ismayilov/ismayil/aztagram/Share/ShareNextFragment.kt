@@ -66,13 +66,11 @@ class ShareNextFragment : Fragment() {
         view.imgBack.setOnClickListener {
             activity!!.shareFragmentContainer.visibility = View.GONE
             activity!!.shareRootContainer.visibility = View.VISIBLE
-        }
 
+        }
 
         return view
     }
-
-
 
 
     fun uploadStorage(newFilePath: String?) {
@@ -80,7 +78,6 @@ class ShareNextFragment : Fragment() {
         profFotoLoadingFragment.show(activity!!.supportFragmentManager, "profFotoLoading")
         profFotoLoadingFragment.isCancelable = false
         kullaniciProfilResminiGuncelle(profFotoLoadingFragment,mUser.uid,newFilePath)
-
     }
 
     private fun kullaniciProfilResminiGuncelle(profFotoLoadingFragment: ProfilePhotoUploadingFragment, userID: String, newFilePath: String?) {
@@ -102,7 +99,7 @@ class ShareNextFragment : Fragment() {
                 if (it.isSuccessful) {
                     photoUri = null
                     val postId = mRef.child("posts/$userID").push().key
-                    val uploadedPost = Posts(userID,postId,"",etSharedImageDescription.text.toString(),it.result.toString())
+                    val uploadedPost = Posts(userID,postId,null,etSharedImageDescription.text.toString(),it.result.toString())
                     mRef.child("posts/$userID/$postId").setValue(uploadedPost)
                     mRef.child("posts/$userID/$postId/upload_date").setValue(ServerValue.TIMESTAMP)
                     if (activity != null) {

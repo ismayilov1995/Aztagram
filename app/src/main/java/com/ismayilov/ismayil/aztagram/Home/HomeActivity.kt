@@ -2,16 +2,24 @@ package com.ismayilov.ismayil.aztagram.Home
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.ismayilov.ismayil.aztagram.Login.LoginActivity
-import com.ismayilov.ismayil.aztagram.Model.Users
 import com.ismayilov.ismayil.aztagram.R
-import com.ismayilov.ismayil.aztagram.utils.BottomNavigationViewHelper
 import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent
 import com.ismayilov.ismayil.aztagram.utils.HomePagerAdapter
 import com.ismayilov.ismayil.aztagram.utils.UniversalImageLoader
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_home.*
 import org.greenrobot.eventbus.EventBus
@@ -30,26 +38,10 @@ class HomeActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mRef = FirebaseDatabase.getInstance().reference
         initImageLoader()
-        setupNavigationView()
         setupHomeViewPager()
         setupAuthListener()
-        //getUserDeatlist()
-
     }
 
-    private fun getUserDeatlist() {
-        mRef.child("users").child(mAuth.currentUser!!.uid).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                if (p0.value != null){
-                    val snapUserDetails = p0.getValue(Users::class.java)
-                    //Butun fragmentlere hazirki user haqqinda data gonderisi
-                    EventBus.getDefault().postSticky(EventbusDataEvent.BrodcastUserData(snapUserDetails))
-                }
-            }
-
-        })
-    }
 
     private fun initImageLoader(){
         val universalImageLoader = UniversalImageLoader(this)
@@ -61,9 +53,44 @@ class HomeActivity : AppCompatActivity() {
         homePagerAdapter.addFragment(CameraFragment())
         homePagerAdapter.addFragment(HomeFragment())
         homePagerAdapter.addFragment(DmFragment())
-
         homeVp.adapter = homePagerAdapter
+        //Hansi seyfeden bashlamali oldugunu deyirik
         homeVp.currentItem = 1
+
+        homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
+        homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
+
+
+        homeVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+            override fun onPageSelected(position: Int) {
+                if (position == 0){
+                    this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                    getStorageAndCameraPermission()
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,1)
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
+                    homePagerAdapter.addChoosenFragmentToViewpager(homeVp,0)
+                }
+                if (position == 1){
+                    this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                    this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
+                    homePagerAdapter.addChoosenFragmentToViewpager(homeVp,1)
+                }
+                if (position == 2){
+                    this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                    this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
+                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,1)
+                    homePagerAdapter.addChoosenFragmentToViewpager(homeVp,2)
+                }
+            }
+        })
     }
 
     private fun setupAuthListener() {
@@ -80,6 +107,25 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun getStorageAndCameraPermission() {
+        Dexter.withActivity(this)
+                .withPermission(android.Manifest.permission.CAMERA)
+                .withListener(object : PermissionListener{
+                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                        EventBus.getDefault().postSticky(EventbusDataEvent.SendCameraRequestPermission(true))
+                        Log.e("HATA","Homeactivity de icaze verildi")
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+                        token!!.continuePermissionRequest()
+                    }
+
+                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                        homeVp.currentItem = 1
+                    }
+                }).check()
+    }
+
     override fun onStart() {
         super.onStart()
         mAuth.addAuthStateListener(mAuthListener)
@@ -92,11 +138,5 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun setupNavigationView(){
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewActivity)
-        BottomNavigationViewHelper.setupNavigation(this,bottomNavigationViewActivity)
-        val menu = bottomNavigationViewActivity.menu
-        val menuItem = menu.getItem(ACTIVITY_NO)
-        menuItem.isChecked = true
-    }
+
 }

@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.ismayilov.ismayil.aztagram.Login.LoginActivity
 import com.ismayilov.ismayil.aztagram.R
-import com.ismayilov.ismayil.aztagram.utils.BottomNavigationViewHelper
-import kotlinx.android.synthetic.main.activity_home.*
 
 class SearchActivity : AppCompatActivity() {
 
@@ -19,18 +17,17 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setupNavigationView()
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
     }
-
+/*
     fun setupNavigationView(){
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewActivity)
         BottomNavigationViewHelper.setupNavigation(this,bottomNavigationViewActivity)
         val menu = bottomNavigationViewActivity.menu.getItem(ACTIVITY_NO)
         menu.isChecked = true
     }
-
+*/
 
     private fun setupAuthListener() {
         mAuthListener = FirebaseAuth.AuthStateListener {
@@ -44,6 +41,11 @@ class SearchActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //setupNavigationView()
     }
 
     override fun onStart() {

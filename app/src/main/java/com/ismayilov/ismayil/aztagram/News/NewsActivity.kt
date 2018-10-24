@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.ismayilov.ismayil.aztagram.Login.LoginActivity
 import com.ismayilov.ismayil.aztagram.R
-import com.ismayilov.ismayil.aztagram.utils.BottomNavigationViewHelper
-import kotlinx.android.synthetic.main.activity_home.*
 
 class NewsActivity : AppCompatActivity() {
 
@@ -18,14 +16,13 @@ class NewsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-        //setupNavigationView()
+        setContentView(R.layout.activity_news)
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
     }
 
-
+/*
     fun setupNavigationView(){
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewActivity)
         BottomNavigationViewHelper.setupNavigation(this,bottomNavigationViewActivity)
@@ -33,7 +30,7 @@ class NewsActivity : AppCompatActivity() {
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.isChecked = true
     }
-
+*/
 
     private fun setupAuthListener() {
         mAuthListener = FirebaseAuth.AuthStateListener {
@@ -47,6 +44,11 @@ class NewsActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //setupNavigationView()
     }
 
     override fun onStart() {

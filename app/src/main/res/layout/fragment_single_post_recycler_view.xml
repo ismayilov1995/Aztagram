@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home.SinglePostRecyclerViewFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivPostProfPicUser"
+        android:layout_width="30dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPostProfPicUser"
+        app:layout_constraintStart_toEndOf="@+id/ivPostProfPicUser"
+        app:layout_constraintTop_toTopOf="@+id/ivPostProfPicUser" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_profile_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPostProfPicUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivPostProfPicUser"/>
+
+    <com.ismayilov.ismayil.aztagram.utils.GridImageView
+        android:id="@+id/ivPostPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="231dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostProfPicUser" />
+
+    <ImageView
+        android:id="@+id/ivDMPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_direct"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCommentPost"
+        app:layout_constraintStart_toEndOf="@+id/ivCommentPost"
+        app:layout_constraintTop_toTopOf="@+id/ivCommentPost" />
+
+    <ImageView
+        android:id="@+id/ivLikePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_like"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostPhoto" />
+
+    <ImageView
+        android:id="@+id/ivCommentPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_comment"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLikePost"
+        app:layout_constraintStart_toEndOf="@+id/ivLikePost"
+        app:layout_constraintTop_toTopOf="@+id/ivLikePost" />
+
+    <ImageView
+        android:id="@+id/ivSavePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="@+id/ivDMPost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivPostPhoto" />
+
+    <TextView
+        android:id="@+id/tvUsernamePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="username"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/ivLikePost"
+        app:layout_constraintTop_toBottomOf="@+id/ivCommentPost" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxHeight="120dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvUsernamePost"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsernamePost" />
+
+
+</android.support.constraint.ConstraintLayout>

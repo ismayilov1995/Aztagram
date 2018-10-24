@@ -65,7 +65,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:keepScreenOn="true"
-            app:cameraFlash="auto"
+            app:cameraFlash="off"
+            app:cameraFacing="front"
             app:cameraSessionType="picture"
             app:cameraWhiteBalance="auto"
             app:cameraJpegQuality="100"
@@ -73,7 +74,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+
+        </com.otaliastudios.cameraview.CameraView>
 
         <com.ismayilov.ismayil.aztagram.utils.GridImageView
             android:id="@+id/ivShootPhoto"
@@ -85,6 +88,28 @@
             app:layout_constraintHeight_percent="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cameraView" />
+
+        <ImageView
+            android:id="@+id/ivSplitCamera"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_camera_back"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/cameraView"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivFlashStatus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_flash_of"
+            android:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/cameraView"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
