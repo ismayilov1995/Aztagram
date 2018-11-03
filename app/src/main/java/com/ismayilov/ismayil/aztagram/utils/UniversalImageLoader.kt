@@ -38,7 +38,7 @@ class UniversalImageLoader(val mContex:Context) {
         }
 
     companion object {
-        private const val defaultImage = R.drawable.ic_profile
+        private const val defaultImage = R.drawable.ic_default
         fun setImage(imgURL:String, imageView:ImageView, mProgressBar:ProgressBar?, ilkkisim: String?){
 
             val imageLoader=ImageLoader.getInstance()

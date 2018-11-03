@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.ismayilov.ismayil.aztagram.Generic.ProfilePhotoUploadingFragment
 import com.ismayilov.ismayil.aztagram.Model.Users
 import com.ismayilov.ismayil.aztagram.R
 import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent

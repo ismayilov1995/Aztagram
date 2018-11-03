@@ -1,4 +1,4 @@
-package com.ismayilov.ismayil.aztagram.Profile
+package com.ismayilov.ismayil.aztagram.Generic
 
 
 import android.os.Bundle

@@ -1,6 +1,5 @@
 package com.ismayilov.ismayil.aztagram.Share
 
-
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -38,7 +37,7 @@ class ShareGalleryFragment : Fragment() {
         val foldersNames = ArrayList<String>()
 
         val cameraImages = getDirPath("/DCIM/Camera")
-        val downloadImages = getDirPath("/Downloads")
+        val downloadImages = getDirPath("/Download")
         val whatsappImages = getDirPath("/WhatsApp/Media/WhatsApp Images")
         val aztagramDir = getDirPath("/DCIM/Aztagram")
         val pictures = getDirPath("/Pictures")
@@ -63,7 +62,6 @@ class ShareGalleryFragment : Fragment() {
             foldersPaths.add(pictures.absolutePath)
             foldersNames.add(pictures.name)
         }
-
 
         val spinnerArrayAdapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, foldersNames)
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

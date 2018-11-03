@@ -12,19 +12,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ServerValue
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.ismayilov.ismayil.aztagram.Generic.ProfilePhotoUploadingFragment
 import com.ismayilov.ismayil.aztagram.Home.HomeActivity
 import com.ismayilov.ismayil.aztagram.Model.Posts
-import com.ismayilov.ismayil.aztagram.Profile.ProfilePhotoUploadingFragment
 import com.ismayilov.ismayil.aztagram.R
 import com.ismayilov.ismayil.aztagram.utils.DocumentsProsess
 import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent
 import com.ismayilov.ismayil.aztagram.utils.UniversalImageLoader
-import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.fragment_profile_photo_uploading.*
 import kotlinx.android.synthetic.main.fragment_share_next.*
 import kotlinx.android.synthetic.main.fragment_share_next.view.*
@@ -64,9 +61,7 @@ class ShareNextFragment : Fragment() {
         }
 
         view.imgBack.setOnClickListener {
-            activity!!.shareFragmentContainer.visibility = View.GONE
-            activity!!.shareRootContainer.visibility = View.VISIBLE
-
+            activity!!.onBackPressed()
         }
 
         return view
@@ -102,6 +97,17 @@ class ShareNextFragment : Fragment() {
                     val uploadedPost = Posts(userID,postId,null,etSharedImageDescription.text.toString(),it.result.toString())
                     mRef.child("posts/$userID/$postId").setValue(uploadedPost)
                     mRef.child("posts/$userID/$postId/upload_date").setValue(ServerValue.TIMESTAMP)
+
+                    //Descriptiona yazilani kommentlerde gostermek ucun
+                    if (!etSharedImageDescription.text.toString().isNullOrEmpty()){
+                        mRef.child("comments/$postId/$postId/user_id").setValue(userID)
+                        mRef.child("comments/$postId/$postId/comment_date").setValue(ServerValue.TIMESTAMP)
+                        mRef.child("comments/$postId/$postId/comment").setValue(etSharedImageDescription.text.toString())
+                        mRef.child("comments/$postId/$postId/comment_likes").setValue("0")
+                    }
+
+                    updatePostCount()
+
                     if (activity != null) {
                         profFotoLoadingFragment.dismiss()
                         activity!!.startActivity(Intent(activity!!, HomeActivity::class.java)
@@ -111,15 +117,26 @@ class ShareNextFragment : Fragment() {
                                         Intent.FLAG_ACTIVITY_NEW_TASK))
                         activity!!.finish()
                     }
-
                 }
             }
         }.addOnProgressListener {
-            var progress = 100 * it.bytesTransferred / it.totalByteCount
-            profFotoLoadingFragment.textViewLoading.text = "Yuklenir..."
+            val progress = 100 * it.bytesTransferred / it.totalByteCount
+            profFotoLoadingFragment.textViewLoading.text = "Yüklənir..."
             profFotoLoadingFragment.tvLoading.visibility = View.VISIBLE
             profFotoLoadingFragment.tvLoading.text = progress.toString()
         }
+    }
+
+    private fun updatePostCount() {
+        mRef.child("users/${mUser.uid}/users_details").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+                var currentPostCount = p0.child("post").value.toString().toInt()
+                currentPostCount ++
+                mRef.child("users/${mUser.uid}/users_details/post").setValue(currentPostCount.toString())
+            }
+        })
     }
 
     @Subscribe(sticky = true)

@@ -82,13 +82,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/flag_azerbaijan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <com.hendraanggrian.widget.SocialEditText
             android:id="@+id/etSharedImageDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,6 +98,8 @@
             android:ems="10"
             android:hint="Aciglama yazin..."
             android:inputType="textMultiLine"
+            app:hashtagColor="@color/blue_instagram"
+            app:mentionColor="@color/blue_instagram"
             app:layout_constraintBottom_toBottomOf="@+id/ivSharedImg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivSharedImg"

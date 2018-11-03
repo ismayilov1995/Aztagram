@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Home.SinglePostRecyclerViewFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivPostProfPicUser"
+        android:layout_width="30dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPostSharedUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPostProfPicUser"
+        app:layout_constraintStart_toEndOf="@+id/ivPostProfPicUser"
+        app:layout_constraintTop_toTopOf="@+id/ivPostProfPicUser" />
+
+    <FrameLayout
+        android:id="@+id/frameLayoutPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/ivDMPost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+
+        <com.ismayilov.ismayil.aztagram.utils.GridImageView
+            android:id="@+id/ivPostPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:scaleType="centerCrop" />
+
+
+        <com.ismayilov.ismayil.aztagram.VideoRecycler.VideoView
+            android:id="@+id/videoViewPost"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <View
+                android:id="@+id/viewV"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@color/black" />
+
+            <com.ismayilov.ismayil.aztagram.VideoRecycler.CameraAnimation
+                android:id="@+id/cameraAnimation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="9dp"
+                android:src="@drawable/fram_camera"
+                app:layout_constraintBottom_toBottomOf="@+id/frameLayoutPost"
+                app:layout_constraintEnd_toEndOf="@+id/frameLayoutPost" />
+        </com.ismayilov.ismayil.aztagram.VideoRecycler.VideoView>
+
+        <com.github.kshitij_jain.instalike.InstaLikeView
+            android:id="@+id/instaLikeView"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_gravity="center"
+            app:likeColor="@color/white"
+            app:likeSize="128dp"
+            app:likeSrc="@drawable/img_heart" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_profile_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPostProfPicUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivPostProfPicUser" />
+
+
+    <ImageView
+        android:id="@+id/ivDMPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_direct"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCommentPost"
+        app:layout_constraintStart_toEndOf="@+id/ivCommentPost"
+        app:layout_constraintTop_toTopOf="@+id/ivCommentPost" />
+
+    <ImageView
+        android:id="@+id/ivLikePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_like"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutPost" />
+
+    <ImageView
+        android:id="@+id/ivCommentPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_comment"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLikePost"
+        app:layout_constraintStart_toEndOf="@+id/ivLikePost"
+        app:layout_constraintTop_toTopOf="@+id/ivLikePost" />
+
+    <ImageView
+        android:id="@+id/ivSavePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="@+id/ivDMPost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutPost" />
+
+    <com.hendraanggrian.widget.SocialTextView
+        android:id="@+id/tvUsernameAndDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="username"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:hashtagColor="@color/blue_instagram"
+        app:layout_constraintStart_toStartOf="@+id/ivLikePost"
+        app:layout_constraintTop_toBottomOf="@+id/tvPostLikeCount"
+        app:mentionColor="@color/blue_instagram" />
+
+    <TextView
+        android:id="@+id/tvUploadAgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        android:text="5 day ago"
+        android:textAlignment="textStart"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvUsernameAndDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentCount" />
+
+    <TextView
+        android:id="@+id/tvPostLikeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="0 beyeni"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/ivLikePost"
+        app:layout_constraintTop_toBottomOf="@+id/ivCommentPost" />
+
+    <TextView
+        android:id="@+id/tvCommentCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textStart"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/ivSavePost"
+        app:layout_constraintStart_toStartOf="@+id/tvUsernameAndDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsernameAndDescription" />
+
+
+</android.support.constraint.ConstraintLayout>

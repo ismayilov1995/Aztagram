@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -37,9 +37,10 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         mAuth = FirebaseAuth.getInstance()
         mRef = FirebaseDatabase.getInstance().reference
+        setupAuthListener()
         initImageLoader()
         setupHomeViewPager()
-        setupAuthListener()
+
     }
 
 
@@ -58,8 +59,6 @@ class HomeActivity : AppCompatActivity() {
         homeVp.currentItem = 1
 
         homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
-        homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
-
 
         homeVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
@@ -71,26 +70,39 @@ class HomeActivity : AppCompatActivity() {
                     this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                     getStorageAndCameraPermission()
-                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,1)
-                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
                     homePagerAdapter.addChoosenFragmentToViewpager(homeVp,0)
                 }
                 if (position == 1){
                     this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
-                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,2)
-                    homePagerAdapter.addChoosenFragmentToViewpager(homeVp,1)
                 }
                 if (position == 2){
                     this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,0)
-                    homePagerAdapter.removeChoosenFragmentFromViewpager(homeVp,1)
-                    homePagerAdapter.addChoosenFragmentToViewpager(homeVp,2)
                 }
             }
         })
+    }
+
+
+
+    private fun getStorageAndCameraPermission() {
+        Dexter.withActivity(this)
+                .withPermission(android.Manifest.permission.CAMERA)
+                .withListener(object : PermissionListener{
+                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                        EventBus.getDefault().postSticky(EventbusDataEvent.SendCameraRequestPermission(true))
+                    }
+                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+                        token!!.continuePermissionRequest()
+                    }
+
+                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                        homeVp.currentItem = 1
+                    }
+                }).check()
     }
 
     private fun setupAuthListener() {
@@ -107,23 +119,15 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStorageAndCameraPermission() {
-        Dexter.withActivity(this)
-                .withPermission(android.Manifest.permission.CAMERA)
-                .withListener(object : PermissionListener{
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                        EventBus.getDefault().postSticky(EventbusDataEvent.SendCameraRequestPermission(true))
-                        Log.e("HATA","Homeactivity de icaze verildi")
-                    }
+    override fun onBackPressed() {
 
-                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
-                        token!!.continuePermissionRequest()
-                    }
-
-                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                        homeVp.currentItem = 1
-                    }
-                }).check()
+        if (homeVp.currentItem == 1){
+            homeVp.visibility = View.VISIBLE
+            activityHomeContainer.visibility = View.GONE
+            super.onBackPressed()
+        }else{
+            homeVp.currentItem = 1
+        }
     }
 
     override fun onStart() {

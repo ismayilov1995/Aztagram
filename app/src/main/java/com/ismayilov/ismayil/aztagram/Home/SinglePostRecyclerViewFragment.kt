@@ -10,7 +10,7 @@ import com.ismayilov.ismayil.aztagram.R
 class SinglePostRecyclerViewFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_single_post_recycler_view, container,false)
+        val view = inflater.inflate(R.layout.single_post_recycler_view, container,false)
 
 
 

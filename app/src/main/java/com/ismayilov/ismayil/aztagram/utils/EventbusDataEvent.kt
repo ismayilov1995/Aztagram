@@ -12,4 +12,6 @@ class EventbusDataEvent {
     internal class SendChoosenFilePath(var filePath:String?)
 
     internal class SendCameraRequestPermission(var canUseCamera:Boolean?)
+
+    internal class SendPostIdWhereCommenting(var postId:String?)
 }

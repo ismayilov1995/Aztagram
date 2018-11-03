@@ -4,7 +4,7 @@ import android.os.AsyncTask
 import android.os.Environment
 import android.support.v4.app.Fragment
 import com.iceteck.silicompressorr.SiliCompressor
-import com.ismayilov.ismayil.aztagram.Profile.ProfilePhotoUploadingFragment
+import com.ismayilov.ismayil.aztagram.Generic.ProfilePhotoUploadingFragment
 import com.ismayilov.ismayil.aztagram.Share.ShareNextFragment
 import java.io.File
 import java.util.*

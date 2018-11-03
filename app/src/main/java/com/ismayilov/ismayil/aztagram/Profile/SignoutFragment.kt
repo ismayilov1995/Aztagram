@@ -17,7 +17,6 @@ class SignoutFragment : DialogFragment() {
                 .setMessage("Eminsiniz ?")
                 .setPositiveButton("Hesabdan Cix") { p0, p1 ->
                     FirebaseAuth.getInstance().signOut()
-                    activity!!.finish()
                 }
                 .setNegativeButton("Legv Et"){ p0,p1 ->
                     dismiss()
