@@ -11,13 +11,18 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
 import com.ismayilov.ismayil.aztagram.Login.LoginActivity
 import com.ismayilov.ismayil.aztagram.Model.Posts
 import com.ismayilov.ismayil.aztagram.Model.UserPosts
 import com.ismayilov.ismayil.aztagram.Model.Users
 import com.ismayilov.ismayil.aztagram.R
 import com.ismayilov.ismayil.aztagram.Search.AlgoliaSearchActivity
-import com.ismayilov.ismayil.aztagram.utils.*
+import com.ismayilov.ismayil.aztagram.VideoRecycler.CenterLayoutManager
+import com.ismayilov.ismayil.aztagram.utils.BottomNavigationViewHelper
+import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent
+import com.ismayilov.ismayil.aztagram.utils.ProfilePostRecyclerAdapter
+import com.ismayilov.ismayil.aztagram.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.greenrobot.eventbus.EventBus
 
@@ -30,6 +35,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var mRef: DatabaseReference
     lateinit var curUser: FirebaseUser
     lateinit var allPosts: ArrayList<UserPosts>
+    var userPostList: AutoPlayVideoRecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +123,7 @@ class ProfileActivity : AppCompatActivity() {
                                 allPosts.add(allIsAddedPosts)
                             }
                         }
-                        setupRecyclerView(true)
+                        setupRecyclerView(false)
                     }
                 })
             }
@@ -125,15 +131,15 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(isGridView: Boolean) {
-        val userPostList = profileRecyclerView
+        userPostList = profileRecyclerView
         if (isGridView) {
-            userPostList.adapter = ProfilePostRecyclerAdapter(allPosts, this)
-            userPostList.layoutManager = GridLayoutManager(this, 3)
+            userPostList!!.adapter = ProfilePostRecyclerAdapter(this, allPosts)
+            userPostList!!.layoutManager = GridLayoutManager(this, 3)
             ivGrid.setColorFilter(ContextCompat.getColor(this@ProfileActivity, R.color.blue_instagram), PorterDuff.Mode.SRC_IN)
             ivList.setColorFilter(ContextCompat.getColor(this@ProfileActivity, R.color.black), PorterDuff.Mode.SRC_IN)
         } else {
-            userPostList.adapter = ProfileListFragmentRecyclerAdapter(this, allPosts)
-            userPostList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            userPostList!!.adapter = ProfilePostRecyclerAdapter(this, allPosts)
+            userPostList!!.layoutManager = CenterLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             ivGrid.setColorFilter(ContextCompat.getColor(this@ProfileActivity, R.color.black), PorterDuff.Mode.SRC_IN)
             ivList.setColorFilter(ContextCompat.getColor(this@ProfileActivity, R.color.blue_instagram), PorterDuff.Mode.SRC_IN)
         }
@@ -181,7 +187,14 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (userPostList?.handingVideoHolder != null) userPostList!!.handingVideoHolder.playVideo()
         setupNavigationView()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        if (userPostList?.handingVideoHolder != null) userPostList!!.handingVideoHolder.stopVideo()
     }
 
     override fun onStart() {

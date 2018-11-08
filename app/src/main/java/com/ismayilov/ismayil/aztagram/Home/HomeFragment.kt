@@ -44,6 +44,8 @@ class HomeFragment : Fragment() {
         allPosts = ArrayList()
         allMyFollowing = ArrayList()
 
+        getAllMyFollower()
+
         view.imgTabCamera.setOnClickListener {
             (activity as HomeActivity).homeVp.currentItem = 0
         }
@@ -116,10 +118,6 @@ class HomeFragment : Fragment() {
                                 }
                             }
                         })
-                    }else{
-                        if (allPosts.size>0 && i==(allMyFollowing.size -1)){
-                            setupRecyclerView()
-                        }
                     }
                 }
             })
@@ -154,7 +152,7 @@ class HomeFragment : Fragment() {
                                 Intent.FLAG_ACTIVITY_NEW_TASK))
                 activity!!.finish()
             } else {
-                getAllMyFollower()
+
             }
         }
     }
@@ -166,13 +164,15 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (recView?.handingVideoHolder != null) recView!!.handingVideoHolder.playVideo()
+        if (recView != null && recView?.handingVideoHolder != null) recView!!.handingVideoHolder.playVideo()
         setupNavigationView()
     }
 
     override fun onPause() {
         super.onPause()
-        if (recView?.handingVideoHolder != null) recView!!.handingVideoHolder.stopVideo()
+        if (recView != null && recView!!.handingVideoHolder != null){
+            recView!!.handingVideoHolder.stopVideo()
+        }
     }
 
     override fun onStop() {

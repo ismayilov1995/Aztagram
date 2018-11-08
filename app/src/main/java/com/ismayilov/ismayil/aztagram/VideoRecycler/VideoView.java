@@ -83,7 +83,7 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
             this.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    //mediaPlayer.seekTo(video.getSeekTo());
+                    mediaPlayer.seekTo(video.getSeekTo());
                     mediaPlayer.setLooping(true);
                     mediaPlayer.start();
                     if (onPreparedListener != null) onPreparedListener.onPrepared();
@@ -97,7 +97,7 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
     public void stop() {
         if (!isPlaying) return;
         isPlaying = false;
-        //video.setSeekTo(mediaPlayer.getCurrentPosition() >= mediaPlayer.getDuration() ? 0 : mediaPlayer.getCurrentPosition());
+        video.setSeekTo(mediaPlayer.getCurrentPosition() >= mediaPlayer.getDuration() ? 0 : mediaPlayer.getCurrentPosition());
         mediaPlayer.pause();
         mediaPlayer.stop();
     }

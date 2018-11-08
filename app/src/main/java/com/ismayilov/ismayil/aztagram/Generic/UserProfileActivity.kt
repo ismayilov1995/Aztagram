@@ -5,7 +5,6 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +16,10 @@ import com.ismayilov.ismayil.aztagram.Model.UserPosts
 import com.ismayilov.ismayil.aztagram.Model.Users
 import com.ismayilov.ismayil.aztagram.Profile.ProfileSettingsActivity
 import com.ismayilov.ismayil.aztagram.R
-import com.ismayilov.ismayil.aztagram.utils.*
+import com.ismayilov.ismayil.aztagram.utils.BottomNavigationViewHelper
+import com.ismayilov.ismayil.aztagram.utils.EventbusDataEvent
+import com.ismayilov.ismayil.aztagram.utils.ProfileListFragmentRecyclerAdapter
+import com.ismayilov.ismayil.aztagram.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import org.greenrobot.eventbus.EventBus
 
@@ -134,10 +136,12 @@ class UserProfileActivity : AppCompatActivity() {
     private fun setupRecyclerView(isGridView: Boolean) {
         val userPostList = profileRecyclerView
         if (isGridView) {
+            /*
             userPostList.adapter = ProfilePostRecyclerAdapter(allPosts, this)
             userPostList.layoutManager = GridLayoutManager(this, 3)
             ivGrid.setColorFilter(ContextCompat.getColor(this@UserProfileActivity, R.color.blue_instagram), PorterDuff.Mode.SRC_IN)
             ivList.setColorFilter(ContextCompat.getColor(this@UserProfileActivity, R.color.black), PorterDuff.Mode.SRC_IN)
+            */
         } else {
             userPostList.adapter = ProfileListFragmentRecyclerAdapter(this, allPosts)
             userPostList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

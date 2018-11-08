@@ -40,7 +40,7 @@
         <com.ismayilov.ismayil.aztagram.utils.GridImageView
             android:id="@+id/ivPostPhoto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
             android:scaleType="centerCrop" />
@@ -49,13 +49,14 @@
         <com.ismayilov.ismayil.aztagram.VideoRecycler.VideoView
             android:id="@+id/videoViewPost"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="350dp">
 
             <View
                 android:id="@+id/viewV"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@color/black" />
+                android:layout_height="wrap_content"
+                android:background="@color/blue_instagram"
+                android:visibility="gone" />
 
             <com.ismayilov.ismayil.aztagram.VideoRecycler.CameraAnimation
                 android:id="@+id/cameraAnimation"
@@ -68,6 +69,7 @@
                 android:src="@drawable/fram_camera"
                 app:layout_constraintBottom_toBottomOf="@+id/frameLayoutPost"
                 app:layout_constraintEnd_toEndOf="@+id/frameLayoutPost" />
+
         </com.ismayilov.ismayil.aztagram.VideoRecycler.VideoView>
 
         <com.github.kshitij_jain.instalike.InstaLikeView

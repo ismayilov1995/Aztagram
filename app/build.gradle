@@ -56,9 +56,8 @@ dependencies {
     implementation 'com.github.Kshitij-Jain:InstaLikeView:1.05'
     implementation 'com.algolia:instantsearch-android:1.13.0'
     implementation 'com.danikula:videocache:2.7.0'
+    implementation 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
     implementation group: 'com.hendraanggrian', name: 'socialview-commons', version: '0.18'
-
-
 
     //country code et
     implementation 'com.hbb20:ccp:2.2.3'

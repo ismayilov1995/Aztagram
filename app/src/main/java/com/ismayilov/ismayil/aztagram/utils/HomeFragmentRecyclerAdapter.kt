@@ -45,13 +45,14 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         var isVideo = false
         val filePath = allPosts[position].post_url
-        val fileType = filePath!!.substring(filePath.lastIndexOf("."), filePath.lastIndexOf(".") + 4)
+        val fileType = filePath!!.substring(filePath.lastIndexOf("."), filePath.lastIndexOf(".")+4)
         if (fileType == ".mp4") {
+            holder.videoCamIndicator.start()
+            holder.videoPerdesi.visibility = View.VISIBLE
             isVideo = true
         }
         holder.setData(position, allPosts[position], isVideo)
     }
-
 
     class MyViewHolder(itemView: View?, myHomeActivity: Context) : VideoHolder(itemView) {
 
@@ -73,23 +74,24 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
         val videoCamIndicator = singleView.cameraAnimation
         val videoPerdesi = singleView.viewV
 
-        fun setData(position: Int, userPosts: UserPosts, video: Boolean) {
+        fun setData(position: Int, allPosts: UserPosts, video: Boolean) {
             createdFileIsVideo = video
             if (createdFileIsVideo) {
                 myVideo.visibility = View.VISIBLE
                 ivPost.visibility = View.GONE
-                myVideo.setVideo(Video(userPosts.post_url, 0))
+                myVideo.setVideo(Video(allPosts.post_url, 0))
             } else {
                 myVideo.visibility = View.GONE
                 ivPost.visibility = View.VISIBLE
-                UniversalImageLoader.setImage(userPosts.post_url!!, ivPost, null, "")
+                UniversalImageLoader.setImage(allPosts.post_url!!, ivPost, null, "")
             }
 
-            tvPostSharedUser.text = userPosts.user_name
-            tvPostUploadAgo.text = TimeAgo.getTimeAgo(userPosts.post_upload_date!!)
-            UniversalImageLoader.setImage(userPosts.user_photo!!, ivProf, null, "")
-            likeStatus(userPosts)
-            showAllComments(position, userPosts)
+            tvPostSharedUser.text = allPosts.user_name
+            tvPostUploadAgo.text = TimeAgo.getTimeAgo(allPosts.post_upload_date!!)
+            UniversalImageLoader.setImage(allPosts.user_photo!!, ivProf, null, "")
+            likeStatus(allPosts)
+            showAllComments(position, allPosts)
+            tvUsernameDesc.text =  allPosts.user_name +" "+ allPosts.post_description
 
             /*
             val usernameAndDesription = "<strong>" + userPosts.user_name + "</strong>" + " " + userPosts.post_description
@@ -101,29 +103,27 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
             */
 
             tvShowComment.setOnClickListener {
-                goToCommentFragment(userPosts)
+                goToCommentFragment(allPosts)
             }
 
             ivComment.setOnClickListener {
-                goToCommentFragment(userPosts)
+                goToCommentFragment(allPosts)
             }
 
             ivLikePost.setOnClickListener {
                 val mUser = FirebaseAuth.getInstance().currentUser!!.uid
                 val mRef = FirebaseDatabase.getInstance().reference
-                mRef.child("likes/${userPosts.post_id}").addListenerForSingleValueEvent(object : ValueEventListener {
+                mRef.child("likes/${allPosts.post_id}").addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
                         if (p0.hasChild(mUser)) {
-                            mRef.child("likes/${userPosts.post_id}/$mUser").removeValue()
-                            likeStatus(userPosts)
-                            //ivLikePost.setImageResource(R.drawable.ic_like)
+                            mRef.child("likes/${allPosts.post_id}/$mUser").removeValue()
+                            likeStatus(allPosts)
                         } else {
-                            mRef.child("likes/${userPosts.post_id}/$mUser").setValue(mUser)
-                            //ivLikePost.setImageResource(R.drawable.ic_like_active)
-                            likeStatus(userPosts)
+                            mRef.child("likes/${allPosts.post_id}/$mUser").setValue(mUser)
+                            likeStatus(allPosts)
                             instaLikeView.start()
                         }
                     }
@@ -138,11 +138,10 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
                 lastClick = System.currentTimeMillis()
                 if (lastClick - firstClick < 300) {
                     instaLikeView.start()
-                    //ivLikePost.setImageResource(R.drawable.ic_like_active)
-                    FirebaseDatabase.getInstance().reference.child("likes/${userPosts.post_id}")
+                    FirebaseDatabase.getInstance().reference.child("likes/${allPosts.post_id}")
                             .child(FirebaseAuth.getInstance().currentUser!!.uid)
                             .setValue(FirebaseAuth.getInstance().currentUser!!.uid)
-                    likeStatus(userPosts)
+                    likeStatus(allPosts)
                     lastClick = 0L
                 }
             }
@@ -153,10 +152,10 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
                 if (lastClick - firstClick < 300) {
                     instaLikeView.start()
                     //ivLikePost.setImageResource(R.drawable.ic_like_active)
-                    FirebaseDatabase.getInstance().reference.child("likes/${userPosts.post_id}")
+                    FirebaseDatabase.getInstance().reference.child("likes/${allPosts.post_id}")
                             .child(FirebaseAuth.getInstance().currentUser!!.uid)
                             .setValue(FirebaseAuth.getInstance().currentUser!!.uid)
-                    likeStatus(userPosts)
+                    likeStatus(allPosts)
                     lastClick = 0L
                 }
             }
@@ -173,8 +172,6 @@ class HomeFragmentRecyclerAdapter(var mContext: Context, var allPosts: ArrayList
 
         override fun playVideo() {
             if (createdFileIsVideo) {
-                videoCamIndicator.start()
-                videoPerdesi.visibility = View.VISIBLE
                 myVideo.play {
                     videoPerdesi.visibility = View.GONE
                     videoCamIndicator.stop()

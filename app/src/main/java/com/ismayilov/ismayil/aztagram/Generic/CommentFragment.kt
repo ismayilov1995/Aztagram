@@ -17,6 +17,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hendraanggrian.widget.Mention
+import com.hendraanggrian.widget.MentionAdapter
 import com.ismayilov.ismayil.aztagram.Model.Comments
 import com.ismayilov.ismayil.aztagram.Model.Users
 import com.ismayilov.ismayil.aztagram.R
@@ -48,22 +50,47 @@ class CommentFragment : Fragment() {
         setupProfilePicture()
 
         view.tvShareComment.setOnClickListener {
+            if (!view.etComment.text.toString().isNullOrEmpty()){
+                val newComment = hashMapOf<String, Any>(
+                        "user_id" to mUser.uid,
+                        "comment" to etComment.text.toString(),
+                        "comment_likes" to "0",
+                        "comment_date" to ServerValue.TIMESTAMP)
 
-            val newComment = hashMapOf<String, Any>(
-                    "user_id" to mUser.uid,
-                    "comment" to etComment.text.toString(),
-                    "comment_likes" to "0",
-                    "comment_date" to ServerValue.TIMESTAMP)
-
-            FirebaseDatabase.getInstance().reference.child("comments").child(postIdIsCommented).push().setValue(newComment)
-
-            etComment.setText("")
-
+                FirebaseDatabase.getInstance().reference.child("comments").child(postIdIsCommented).push().setValue(newComment)
+                etComment.setText("")
+            }
         }
 
         view.imgBack.setOnClickListener {
             activity!!.onBackPressed()
         }
+
+        val mentionAdapter = MentionAdapter(activity!!)
+
+        view.etComment.setMentionTextChangedListener { view, s ->
+
+            FirebaseDatabase.getInstance().reference.child("users").orderByChild("user_name").startAt(s).endAt(s+"\uf8ff")
+                    .addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError) {
+                        }
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.value != null){
+                                for (i in p0.children){
+                                    mentionAdapter.clear()
+                                    val readUser = i.getValue(Users::class.java)
+                                    val userName = readUser!!.user_name.toString()
+                                    val fullName = readUser.full_name.toString()
+                                    val photo = readUser.users_details!!.profile_picture
+                                    val profPic = if (!photo.isNullOrEmpty()) photo else ""
+                                    mentionAdapter.add(Mention(userName,fullName,profPic))
+                                }
+                            }
+                        }
+
+                    })
+        }
+        view.etComment.mentionAdapter = mentionAdapter
 
         return view
     }
